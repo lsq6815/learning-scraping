@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-use lxml's xpath to find all name (tag with class green)
+use lxml xpath to find all name (tag with class green)
 """
 
 from urllib.request import urlopen
@@ -37,7 +37,7 @@ for item in name_list:
 
 # sort dict
 # 1. show times of name (descent)
-# 2. the lenght of name (asecent)
+# 2. the length of name (ascent)
 name_dict = dict(
     sorted(name_dict.items(), key=lambda i: (i[1], -len(i[0])), reverse=True))
 

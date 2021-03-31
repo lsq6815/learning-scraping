@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 
 from gift import Gift
 
+
 def tag2gift(tag: bs4.element.Tag):
     """
     extrace info from tag and return the Gift Object constructed by those info
@@ -29,5 +30,5 @@ bsObj = BeautifulSoup(html.read(), features='lxml')
 #     gifts.append(tag2gift(child))
 gifts = map(tag2gift, bsObj.select("table#giftList > tr.gift"))
 
-for gift in sorted(gifts, key=lambda i: (-i.price, len(i.name)) ):
+for gift in sorted(gifts, key=lambda i: (-i.price, len(i.name))):
     print(gift)

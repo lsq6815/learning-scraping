@@ -3,6 +3,7 @@
 Gift.py: define Gift class
 """
 
+
 class Gift():
     """
     class to expression gift
@@ -14,8 +15,8 @@ class Gift():
         init the object with name, desc, price
 
         Args:
-            name: name of gitf 
-            desc: gitf description
+            name: name of gift 
+            desc: gift description
             price: price of gift
         """
         self.name = name
@@ -25,6 +26,6 @@ class Gift():
     def __str__(self):
         """toString
 
-        return string
+        return Gift as string
         """
         return f"Name: {self.name.title()}\nPrice: {self.price}\nDescription:\n{self.desc}\n"

@@ -1,14 +1,14 @@
 # The lxml.etree Tutorial
 
-import `lxml.etree`:
+Import `lxml.etree` :
 
-```python
+``` python
 from lxml import etree
 ```
 
-A portable way to import `etree`:
+A portable(可移植的) way to import `etree` :
 
-```python
+``` python
 try:
     from lxml import etree
     print("running with lxml.etree")
@@ -32,34 +32,34 @@ except ImportError:
                     print("Failed to import ElementTree from any known place")
 ```
 
-## The `Element` class
+## The Element class
 
 `Element` class denote the XML element.
 
 Manually construct an element:
 
-```python
+``` python
 >>> root = etree.Element('root')
 >>> root.tag
 'root'
 ```
 
-Use append method the child element to `root`:
+Use append method append the child element to `root` :
 
-```python
->>> root.append(etree.Element("child1"))
+``` python
+root.append(etree.Element("child1"))
 ```
 
-Use class function to add sub element to `root`:
+Use class function to add sub element to `root` :
 
-```python
+``` python
 child2 = etree.SubElement(root, "child2")
 child3 = etree.SubElement(root, "child3")
 ```
 
 Display XML element:
 
-```python
+``` python
 >>> print(etree.tostring(root, pretty_print=True).decode('utf-8'))
 <root>
     <child1/>
@@ -68,9 +68,9 @@ Display XML element:
 </root>
 ```
 
-### `Element`s are lists
+### Elements are lists
 
-```python
+``` python
 >>> child = root[0]
 >>> print(child.tag)
 child1
@@ -104,19 +104,24 @@ True
 ...     print("The root element has children")
 ```
 
-Do not test if a `Element` has children this way, even if it is pythonic: `if len(root)`.
+Do not test if a `Element` has children this way, even if it is pythonic: 
 
-### `Element`s carry attributes as a dict
+``` python
+if len(root):
+    print("The root element has children")
+```
+
+### Elements carry attributes as a dict
 
 Create XML element with attributes:
 
-```python
-root = etree.Element("root", interseting="totally")
+``` python
+root = etree.Element("root", interesting="totally")
 ```
 
-Attributes are unorderde name-value pairs:
+Attributes are unordered name-value pairs:
 
-```python
+``` python
 >>> print(root.get("interesting"))
 totally
 
@@ -138,11 +143,11 @@ hello = 'Huhu'
 interesting = 'totally'
 ```
 
-### `Element`s contain text
+### Elements contain text
 
-`Element`s can contain text:
+`Element` s can contain text:
 
-```python
+``` python
 >>> root = etree.Element("root")
 >>> root.text = "TEXT"
 
@@ -153,21 +158,23 @@ TEXT
 b'<root>TEXT</root>''
 ```
 
-In many XML documents (data-centric documents), this is the only place where text can be found. It is encapsulated by a leaf tag at the very bottom of the tree hierarchy.
+在许多以数据为中心的XML文档中，这是唯一可以找到 `text` 的地方。它被树形层次结构的叶子节点所封装。
 
-However, if XML is used for tagged text documents such as (X)HTML, text can also appear between different elements, right in the middle of the tree:
+然而，如果XML用于标记文本文档，如 `(X)HTML` ，文本也可以出现在不同元素之间：
 
-```html
+``` html
 <html>
-    <body>
-        Hello <br/> World
-    </body>
+
+<body>
+    Hello <br /> World
+</body>
+
 </html>
 ```
 
-Here, the `<br/>` tag is surrounded by text. This is often referred to as *document-style* or *mixed-content* XML. Elements support this through their `tail` property. It contains the text that directly follows the element, up to the next element in the XML tree:
+这里， `<br/>` 标签被 `text` 包围。这通常被称为 *文档风格* 或 *混合内容* XML。 `Element` 通过 `tail` 属性来支持这一点。它包含直接跟随 `Element` 的 `text` ，直到XML树中的下一个 `Element` 。
 
-```python
+``` python
 >>> html = etree.Element("html")
 >>> body = etree.SubElement(html, "body")
 >>> body.text = "TEXT"
@@ -184,9 +191,9 @@ b'<html><body>TEXT<br/></body></html>'
 b'<html><body>TEXT<br/>TAIL</body></html>'
 ```
 
-if `text` and `tail` still not enough:
+If `text` and `tail` still not enough:
 
-```python
+``` python
 >>> etree.tostring(br)
 b'<br/>TAIL'
 >>> etree.tostring(br, with_tail=False) # lxml.etree only!
@@ -200,7 +207,7 @@ b'TEXTTAIL'
 
 `XPath` is yet another powerful method to extract content from document:
 
-```python
+``` python
 >>> print(html.xpath("string()")) # lxml.etree only!
 TEXTTAIL
 >>> print(html.xpath("//text()")) # lxml.etree only!
@@ -209,34 +216,34 @@ TEXTTAIL
 
 If you want to use this more often, you can wrap it in function:
 
-```python
+``` python
 >>> print(html.xpath("string()")) # lxml.etree only!
 TEXTTAIL
 >>> print(html.xpath("//text()")) # lxml.etree only!
 ['TEXT', 'TAIL']
 ```
 
-if the result is extracted as `Element`, than it still connect to the origi , which means function and attribute like `getparent()` and `is_text` work as well. But if the result is constructed via XPath functions like `text()` and `string()`, then the result is disconnected from original tree.
+如果查询的结果是以 `Element` 的形式提取的，那么它仍然连接到原来的XML树，这意味着像 `getparent()` 和 `is_text` 这样的函数和属性也可以继续使用。但如果结果是通过 `XPath` 函数如 `text()` 和 `string()` 来构造的，那么就会与原始XML树断开。
 
 ### Tree iteration
 
 Basic iteration:
 
-```python
+``` python
 from element in root.iter():
     print(f"{element.tag} - {element.text}")
 ```
 
 Iteration for specified elements:
 
-```python
+``` python
 from element in root.iter("child", "another"):
     print(f"{element.tag} - {element.text}")
 ```
 
-For document mingled with `Entity` and `Comment`:
+For document mingled with `Entity` and `Comment` :
 
-```python
+``` python
 for element in root.iter():
     if isinstance(element.tag, str):
         print(f"{element.tag} - {element.text}")
@@ -250,15 +257,15 @@ for element in root.iter(tag=etree.Entity):
     print(element.text)
 ```
 
-### Serialisation
+### Serialization
 
 #### `etree.tostring()`
 
-- method='xml': can switch to 'html' and 'text'
+- `method='xml'`: can switch to 'html' and 'text'
 
-- encoding='ascii': can switch to 'UTF-8'
+- `encoding='ascii'`: can switch to 'UTF-8'
 
-- pretty_print=False
+- `pretty_print=False`
 
 #### `etree.indent()`
 
@@ -266,7 +273,7 @@ Using `space=` to control indention.
 
 ## The `ElementTree` class
 
-```python
+``` python
 >>> root = etree.XML('''\
 ... <?xml version="1.0"?>
 ... <!DOCTYPE root SYSTEM "test" [ <!ENTITY tasty "parsnips">  ]>
@@ -287,9 +294,9 @@ Using `space=` to control indention.
 <!DOCTYPE root PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "file://local.dtd">)
 ```
 
-One of the important differences is that the `ElementTree` class serialises as a **complete** document, as opposed to a single `Element`. This includes top-level processing instructions and comments, as well as a `DOCTYPE` and other `DTD` content in the document:
+其中一个重要的区别是， `ElementTree` 类序列化为一个**完整的**文档，而不是一个单一的 `Element` 。这包括顶层处理指令和注释，以及文档中的 `DOCTYPE` 和其他 `DTD` 内容：
 
-```python
+``` python
 >>> print(etree.tostring(tree))  # lxml 1.3.4 and later
 <!DOCTYPE root PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "file://local.dtd" [
 <!ENTITY tasty "parsnips">
@@ -304,13 +311,13 @@ One of the important differences is that the `ElementTree` class serialises as a
 </root>
 ```
 
-## Pasring from strings and files
+## Parsing from strings and files
 
 ### The `fromstring()` function
 
 The `fromstring()` function is the easiest way to parse a string:
 
-```python
+``` python
 >>> some_xml_data = "<root>data</root>"
 
 >>> root = etree.fromstring(some_xml_data)
@@ -324,7 +331,7 @@ b'<root>data</root>'
 
 The `XML()` function behaves like the `fromstring()` function, but is commonly used to write XML `literals` right into the source:
 
-```python
+``` python
 >>> root = etree.XML("<root>data</root>")
 >>> print(root.tag)
 root
@@ -334,7 +341,7 @@ b'<root>data</root>'
 
 There is also a corresponding function `HTML()` for HTML literals.
 
-```python
+``` python
 >>> root = etree.HTML("<p>data</p>")
 >>> etree.tostring(root)
 b'<html><body><p>data</p></body></html>''

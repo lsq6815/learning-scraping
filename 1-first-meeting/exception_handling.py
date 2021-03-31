@@ -1,27 +1,35 @@
 #!/usr/bin/env python3
+"""
+如何处理获取和解析HTML时的错误
+"""
+
+from urllib.error import HTTPError
 from urllib.request import urlopen
+
 from bs4 import BeautifulSoup
+
 try:
     html = urlopen("http://pythonscraping.com/pages/page1.html")
 except HTTPError as e:
-    # if encounter 404/500... etc.
+    # 如果遭遇404，500…… 这样的错误
     print(e)
-    exit(0);
+    exit(0)
 
 if html is None:
-    # if URL is mistaken or page is not exist
+    # 如果URL写错了或者网页不存在了
     print("URL is not found")
-    exit(0);
+    exit(0)
 
 try:
-    bad_content = bsObj.nonExistingTag.anotherTag
+    bsObj = BeautifulSoup(html.read(), 'lxml')
+    content = bsObj.middleTag.tailTag
 except AttributeError as e:
-    # if the middle tag is non-exist
-    print("Tag wasn't found")
-    exit(0);
+    # 如果中间的tag是不存在的
+    print("middleTag wasn't exist")
+    exit(0)
 
-if bad_content is None:
-    # if another tag isn't exist
-    print("Tag wasn't found")
+if content is None:
+    # 如果尾标签不存在
+    print("tailTag wasn't found")
 
-print(bad_content)
+print(content)

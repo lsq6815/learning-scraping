@@ -1,8 +1,8 @@
 # First Meeting
 
-# `urllib.response` -- Response classes used by `urllib`
+## `urllib.response` -- Response classes used by `urllib`
 
-The `urllib.response` module define a minimal file-like interface, including `read()` and `readline()`. 
+The `urllib.response` module define a minimal file-like interface, including `read()` and `readline()`.
 
 ## `urllib.response.addinfourl`
 
@@ -11,5 +11,3 @@ The `urllib.response` module define a minimal file-like interface, including `re
 - `headers`
 
 - `status`
-
-
